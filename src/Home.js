@@ -1,4 +1,5 @@
-import { useFormik } from "formik";
+import { useFormik} from "formik";
+ 
 import {signUpSchema} from './schemas'
 const initialValues = {
     email:"",
@@ -6,17 +7,24 @@ const initialValues = {
     confirm_password:"",
     name:"",
     image: "",
+    remember: false,
 }
 const Home = () => {
+   
  const formik =  useFormik({
         initialValues:initialValues,
         validationSchema:signUpSchema,
         onSubmit:(values)=>{
             console.log(values)
+             formik.resetForm();
+            
         }
     })
     const {values,errors,touched,handleSubmit,handleChange,handleBlur} = formik;
+    
+  
      
+  
 return <>
       
 
@@ -43,12 +51,22 @@ return <>
   {errors.confirm_password && touched.confirm_password?<p style={{color:'red', fontSize:'0.7rem', marginBottom:'0.5rem'}}>{errors.confirm_password}</p>:<p>&nbsp;</p>}
  <div className="mb-5">
     <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Image</label>
-    <input type="file" name="image" autoComplete="off" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " value={values.image} onChange={handleChange} onBlur={handleBlur}/>
+    <input type="file" name="image" autoComplete="off" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "   onChange={(e)=>{  const reader = new FileReader();
+  
+  reader.onload = () => {
+     if (reader.readyState === 2){
+        formik.setFieldValue('image',reader.result);
+        
+     }
+  }
+ reader.readAsDataURL(e.target.files[0])}
+}
+          onBlur={formik.handleBlur} /> 
   </div>
   {errors.image && touched.image?<p style={{color:'red', fontSize:'0.7rem', marginBottom:'0.5rem'}}>{errors.image}</p>:<p>&nbsp;</p>}
   <div className="flex items-start mb-5">
     <div className="flex items-center h-5">
-      <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 "/>
+      <input id="remember" type="checkbox"   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 "/>
     </div>
     <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 ">Remember me</label>
   </div>
