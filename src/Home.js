@@ -56,6 +56,7 @@ return <>
   reader.onload = () => {
      if (reader.readyState === 2){
         formik.setFieldValue('image',reader.result);
+         
         
      }
   }
