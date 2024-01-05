@@ -55,12 +55,15 @@ return <>
   
   reader.onload = () => {
      if (reader.readyState === 2){
+      
         formik.setFieldValue('image',reader.result);
          
         
      }
   }
- reader.readAsDataURL(e.target.files[0])}
+  let file = e.target.files[0]
+ reader.readAsDataURL(file);
+}
 }
           onBlur={formik.handleBlur} /> 
   </div>
